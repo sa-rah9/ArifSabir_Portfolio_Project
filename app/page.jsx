@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "../components/ui/button";
 import { FiDownload } from "react-icons/fi";
 import { LiaCrossSolid } from "react-icons/lia";
@@ -7,6 +7,7 @@ import Photo from "../components/Photo";
 import Instruments from "../components/Instruments";
 import { useState } from "react";
 import { motion } from "framer-motion"; // Import Framer Motion for animation
+import Link from "next/link"; // Import Link from next/link for routing
 
 const Home = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -16,14 +17,9 @@ const Home = () => {
     setIsDialogOpen(true);
   };
 
-  // Close dialog box
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
-  };
-
   return (
     <section className="h-full">
-      {/* <Particle /> Uncomment if using particles */} 
+      {/* <Particle /> Uncomment if using particles */}
       <div className="container mx-auto h-full">
         <div className="flex flex-col xl:flex-row items-center justify-between xl:pb-24">
           {/* Left Side Content */}
@@ -68,23 +64,17 @@ const Home = () => {
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-5"
         >
           <div className="bg-white/95 text-black p-8 rounded-xl shadow-xl max-w-lg w-full relative">
-            <button
-              className="absolute top-2 right-2 text-black text-xl font-bold"
-              onClick={handleDialogClose}
-            >
-              &times;
-            </button>
             <h2 className="text-3xl font-semibold mb-4">CV Request</h2>
-            <p className="text-2xl mb-6">
+            <p className="text-xl mb-6">
               The CV will be provided upon request. Please reach out for more details.
+              Follow the link and tell the purpose why you want the CV.
             </p>
             <div className="flex justify-center">
-              <button
-                onClick={handleDialogClose}
-                className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition"
-              >
-                Close
-              </button>
+              <Link href="/contact" legacyBehavior>
+                <a className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition">
+                  Go to Contact Page
+                </a>
+              </Link>
             </div>
           </div>
         </motion.div>
