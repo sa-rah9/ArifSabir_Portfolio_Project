@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Ensure this component is run in the client
 
 import { useState } from "react";
 import { Button } from "../../components/ui/button";
@@ -40,6 +40,9 @@ const Contact = () => {
     message: "",
   });
 
+  const [statusMessage, setStatusMessage] = useState(""); // State to store status message
+  const [isSubmitting, setIsSubmitting] = useState(false); // To manage form submission status
+
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,13 +53,38 @@ const Contact = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Mark as submitting
+    setStatusMessage(""); // Reset status message
 
-    // Simulate form submission (replace with actual submission logic)
-    console.log("Form Data Submitted: ", formData);
+    try {
+      // Send form data to backend API
+      const response = await fetch("/api/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Optionally reset form fields
+      const result = await response.json();
+
+      if (response.status === 200) {
+        // Success message
+        setStatusMessage("Message sent successfully!");
+      } else {
+        // Error message from server
+        setStatusMessage(result.error || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting form: ", error);
+      setStatusMessage("An error occurred while submitting the form. Please try again.");
+    } finally {
+      setIsSubmitting(false); // Reset submitting status
+    }
+
+    // Optionally reset form fields after submission
     setFormData({
       firstname: "",
       lastname: "",
@@ -158,9 +186,11 @@ const Contact = () => {
                 placeholder="Type your message here."
                 required
               />
-              <Button size="md" className="max-w-40" type="submit">
-                Send message
+              <Button size="md" className="max-w-40" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send message"}
               </Button>
+              {/* Display status message */}
+              {statusMessage && <p className="text-white mt-4">{statusMessage}</p>}
             </form>
           </article>
 
