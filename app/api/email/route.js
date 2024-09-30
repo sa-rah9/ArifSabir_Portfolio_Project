@@ -21,7 +21,7 @@ export async function POST(req ) {
     // Compose the email
     const mailOptions = {
       from: process.env.EMAIL_USER, // Sender's email
-      to: 'resheph.inayat7@gmail.com', // Your receiving email address
+      to: 'rogerkhan2006@gmail.com', // Your receiving email address
       subject: `New Form Submission from ${firstname} ${lastname}`,
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
