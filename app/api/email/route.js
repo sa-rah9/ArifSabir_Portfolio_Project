@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export async function POST(req) {
+export async function POST(req ) {
   try {
     const body = await req.json();
     const { firstname, lastname, email, phone, message } = body;
@@ -9,44 +9,61 @@ export async function POST(req) {
     console.log('EMAIL_USER:', process.env.EMAIL_USER);
     console.log('EMAIL_PASS:', process.env.EMAIL_PASS);
 
-    // Create Nodemailer transporter
+    // Create the Nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: process.env.EMAIL_USER, // Replace with your Gmail email
-        pass: process.env.EMAIL_PASS, // Replace with your Gmail password or app-specific password
+        user: process.env.EMAIL_USER, // Ensure it's cast as a string
+        pass: process.env.EMAIL_PASS, // Ensure it's cast as a string
       },
     });
 
-    // Log to check if transporter is correctly configured
-    console.log('Transporter created:', transporter);
-
-    // Compose email
+    // Compose the email
     const mailOptions = {
-      from: email,
-      to: 'sarah.geo7@gmail.com', // Your receiving email
-      subject: `New Contact Form Submission from ${firstname} ${lastname}`,
-      text: `
-        Name: ${firstname} ${lastname}
-        Email: ${email}
-        Phone: ${phone}
-        Message: ${message}
+      from: process.env.EMAIL_USER, // Sender's email
+      to: 'resheph.inayat7@gmail.com', // Your receiving email address
+      subject: `New Form Submission from ${firstname} ${lastname}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+          <h2 style="color: #ffff;">New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${firstname} ${lastname}</p>
+          <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #3498DB;">${email}</a></p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Message:</strong></p>
+          <blockquote style="border-left: 4px solid #ddd; padding-left: 10px; color: #555;">
+            ${message}
+          </blockquote>
+          <br/>
+          <p style="color: #888; font-size: 12px;">This email was automatically generated from your contact form.</p>
+        </div>
       `,
     };
 
-    // Send email
-    const info = await transporter.sendMail(mailOptions);
+    // Use .then() and .catch() to send email
+    return transporter.sendMail(mailOptions)
+      .then((info) => {
+        console.log('Message sent: %s', info.messageId);
 
-    // Log the response from Nodemailer
-    console.log('Message sent: %s', info.messageId);
+        // Return success response
+        return new Response(JSON.stringify({ message: 'Email sent successfully!' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      })
+      .catch((error) => {
+        console.error('Error sending email:', error.message, error.stack);
 
-    return new Response(JSON.stringify({ message: 'Email sent successfully!' }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+        // Return error response
+        return new Response(JSON.stringify({ error: `Error sending email: ${error.message}` }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      });
   } catch (error) {
-    console.error('Error sending email:', error);
-    return new Response(JSON.stringify({ error: 'Error sending email' }), {
+    console.error('Error processing request:', error.message, error.stack);
+
+    // Return error response for request parsing issues
+    return new Response(JSON.stringify({ error: `Error processing request: ${error.message}` }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
