@@ -61,7 +61,7 @@ const Home = () => {
               </div>
             </article>
             {/* Right Side Photo */}
-            <aside className="order-1 xl:order-none mb-8 xl:mb-0">
+            <aside className="order-1 xl:order-none mb-8 xl:mb-0 rounded-full hue-rotate-15" >
               <Photo alt="Profile Picture of Arif" />
             </aside>
           </div>

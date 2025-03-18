@@ -1,36 +1,39 @@
-"use client"
+"use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image"
+import Image from "next/image";
 
 const Photo = () => {
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full flex items-center justify-center relative">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{
           opacity: 1,
           transition: { delay: 2, duration: 0.4, ease: "easeIn" },
         }}
+        className="relative"
       >
+        {/* Image Positioned within the Circle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
             transition: { delay: 2.4, duration: 0.4, ease: "easeInOut" },
           }}
-          className="w-[298px] h-[298px] xl:w-[470px] xl:h-[450px] mix-blend-lighten absolute"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] xl:w-[465px] xl:h-[465px] rounded-full overflow-hidden"
         >
           <Image
             src="/assets/photo1.jpg"
             priority
             quality={100}
             fill
-            alt=""
-            className="object-contain rounded-full"
+            alt="Profile Picture"
+            className="object-cover"
           />
         </motion.div>
-        
+
+        {/* Animated Circles */}
         <motion.svg
           className="w-[300px] xl:w-[465px] h-[300px] xl:h-[465px]"
           fill="transparent"
@@ -39,11 +42,12 @@ const Photo = () => {
         >
           {/* Yellow stroke */}
           <motion.circle
+          className={"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-5"}
             cx="253"
             cy="253"
             r="250"
-            stroke="#FFEA00" 
-            strokeWidth="6"
+            stroke="#FFEA00"
+            strokeWidth="16"
             strokeLinecap="round"
             strokeLinejoin="round"
             initial={{ strokeDasharray: "24 10 0 0" }}
@@ -52,7 +56,7 @@ const Photo = () => {
               rotate: [120, 360],
             }}
             transition={{
-              duration: 8, // Slower animation duration
+              duration: 8,
               repeat: Infinity,
               repeatType: "reverse",
             }}
@@ -73,7 +77,7 @@ const Photo = () => {
               rotate: [120, 360],
             }}
             transition={{
-              duration: 2, // Slower animation duration
+              duration: 2,
               repeat: Infinity,
               repeatType: "reverse",
             }}
