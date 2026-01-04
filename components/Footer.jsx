@@ -146,7 +146,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300 font-medium"
             >
-             Codelystic
+              Codelystic
             </a>
           </div>
 
@@ -164,7 +164,8 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-slate-800/50">
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-slate-400 italic text-sm leading-relaxed">
-              "For where two or three gather in my name, there am I with them."
+              &quot; For where two or three gather in my name, there am I with
+              them. &quot;
               <span className="block mt-1 text-indigo-400 font-medium not-italic">
                 - Matthew 18:20
               </span>

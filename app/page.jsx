@@ -134,7 +134,7 @@ const Home = () => {
                   Pastor & Worshipper
                 </h2>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                  Hello, I'm
+                  Hello, I am
                   <span className="block mt-2 bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
                     Arif Sabir
                   </span>
@@ -213,7 +213,6 @@ const Home = () => {
 
                 {/* Image Container */}
                 <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full overflow-hidden border-4 border-slate-800 shadow-2xl hover:border-indigo-500/50 transition-all duration-500">
-              
                   <Image
                     width={1000}
                     height={1000}
@@ -297,11 +296,9 @@ const Home = () => {
                 className="group text-left p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-indigo-500/50 hover:bg-slate-800/50 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-default"
                 style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                <div className="text-4xl md:text-5xl font-bold text-indigo-400/20 mb-4 group-hover:scale-110 transition-transform duration-300 leading-none">
-                  "
-                </div>
+                <div className="text-4xl md:text-5xl font-bold text-indigo-400/20 mb-4 group-hover:scale-110 transition-transform duration-300 leading-none"></div>
                 <div className="text-lg md:text-xl text-slate-300 mb-4 group-hover:text-white transition-colors duration-300 italic leading-relaxed">
-                  "{item.quote}"
+                  &quot; {item.quote} &quot;
                 </div>
                 <div className="text-sm text-indigo-400 group-hover:text-violet-300 transition-colors duration-300 font-medium">
                   — {item.author}

@@ -1,37 +1,19 @@
-"use client"; // Ensure this component is run in the client
+"use client";
 
 import { useState } from "react";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Textarea } from "../../components/ui/textarea";
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
-import { motion } from "framer-motion";
-import Head from "next/head"; // Import Head for SEO tags
-
-// Contact Information
-const info = [
-  {
-    icon: <FaPhoneAlt aria-label="Phone icon" />,
-    title: "Phone",
-    description: "(+44) 07413074274",
-    link: "tel:+447413074274",
-  },
-  {
-    icon: <FaEnvelope aria-label="Email icon" />,
-    title: "Email",
-    description: "rogerkhan2006@gmail.com",
-    link: "mailto:rogerkhan2006@gmail.com",
-  },
-  {
-    icon: <FaMapMarkerAlt aria-label="Address icon" />,
-    title: "Address",
-    description: "60 St Elmo close Slough, Berkshire",
-    link: "https://www.google.com/maps?q=60+St+Elmo+Close+Slough+Berkshire",
-  },
-];
+import {
+  Send,
+  Phone,
+  Mail,
+  MapPin,
+  CheckCircle,
+  AlertCircle,
+  Loader,
+  MessageSquare,
+  Clock,
+} from "lucide-react";
 
 const Contact = () => {
-  // State to hold form data
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -40,10 +22,37 @@ const Contact = () => {
     message: "",
   });
 
-  const [statusMessage, setStatusMessage] = useState(""); // State to store status message
-  const [isSubmitting, setIsSubmitting] = useState(false); // To manage form submission status
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusType, setStatusType] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handle form input changes
+  const contactInfo = [
+    {
+      icon: Phone,
+      title: "Phone",
+      description: "(+44) 07413074274",
+      link: "tel:+447413074274",
+      color: "from-blue-500 to-cyan-500",
+      stat: "Available 24/7",
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      description: "rogerkhan2006@gmail.com",
+      link: "mailto:rogerkhan2006@gmail.com",
+      color: "from-violet-500 to-purple-500",
+      stat: "Quick Response",
+    },
+    {
+      icon: MapPin,
+      title: "Address",
+      description: "60 St Elmo close Slough, Berkshire",
+      link: "https://www.google.com/maps?q=60+St+Elmo+Close+Slough+Berkshire",
+      color: "from-pink-500 to-rose-500",
+      stat: "Visit Us",
+    },
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -52,14 +61,13 @@ const Contact = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true); // Mark as submitting
-    setStatusMessage(""); // Reset status message
+    setIsSubmitting(true);
+    setStatusMessage("");
+    setStatusType("");
 
     try {
-      // Send form data to backend API
       const response = await fetch("/api/email", {
         method: "POST",
         headers: {
@@ -71,154 +79,382 @@ const Contact = () => {
       const result = await response.json();
 
       if (response.status === 200) {
-        // Success message
         setStatusMessage("Message sent successfully!");
+        setStatusType("success");
+        setFormData({
+          firstname: "",
+          lastname: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
       } else {
-        // Error message from server
-        setStatusMessage(result.error || "Something went wrong. Please try again.");
+        setStatusMessage(
+          result.error || "Something went wrong. Please try again."
+        );
+        setStatusType("error");
       }
     } catch (error) {
       console.error("Error submitting form: ", error);
-      setStatusMessage("An error occurred while submitting the form. Please try again.");
+      setStatusMessage("An error occurred. Please try again.");
+      setStatusType("error");
     } finally {
-      setIsSubmitting(false); // Reset submitting status
+      setIsSubmitting(false);
     }
-
-    // Optionally reset form fields after submission
-    setFormData({
-      firstname: "",
-      lastname: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
   };
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: { delay: 2.4, duration: 0.4, ease: "easeIn" },
-      }}
-      className="py-6"
-    >
-      <Head>
-        <title>Contact Arif Sabir - Pastor & Worshipper</title>
-        <meta name="description" content="Get in touch with Arif Sabir, a devoted Pastor and Worshipper. Contact him through phone, email, or visit his address for spiritual guidance and support." />
-        <meta name="keywords" content="Contact Arif Sabir, Pastor, Worshipper, Contact Form, Spiritual Guidance" />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Contact Arif Sabir - Pastor & Worshipper" />
-        <meta property="og:description" content="Get in touch with Arif Sabir, a devoted Pastor and Worshipper. Contact him through phone, email, or visit his address for spiritual guidance and support." />
-        <meta property="og:image" content="https://i0.wp.com/www.evertonparkchurch.com.au/wp-content/uploads/2016/01/1601-Worshipping_God_B_web.jpg?w=1153&ssl=1" /> {/* Update with actual image URL */}
-        <meta property="og:url" content="https://www.worshiper-arifsabir.com/contact" /> {/* Update with actual URL */}
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Arif Sabir's Portfolio" />
-      </Head>
+    <section className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 py-20 px-6 relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 -left-48 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
+        <div
+          className="absolute bottom-1/3 -right-48 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl" />
+      </div>
 
-      <div className="container mx-auto">
-        <div className="flex flex-col xl:flex-row gap-[30px]">
-          {/* Form Section */}
-          <article className="xl:h-[54%] order-2 xl:order-none">
-            <form
-              className="flex flex-col gap-6 p-10 bg-[#27272c] rounded-xl"
-              onSubmit={handleSubmit}
-              aria-labelledby="contact-form-title"
-            >
-              <h3 id="contact-form-title" className="text-4xl text-[#FFEA00]">
-                Let&apos;s work together
-              </h3>
-              <p className="text-white/80 text-xl">
-                &quot;At the heart of everything we do is a commitment to excellence and purpose. As it is written, &apos;Whatever you do, work at it with all your heart, as working for the Lord, not for human masters&apos; (Colossians 3:23). We approach every project with passion and dedication, striving to create a meaningful experience that goes beyond just meeting expectations. Our goal is to engage with you fully, helping bring your vision to life in a way that reflects true craftsmanship and care.&quot;
-              </p>
-              <div className="grid grid-col-1 md:grid-col-2 gap-6 ">
-                <label htmlFor="firstname" className="sr-only">First Name</label>
-                <Input
-                  id="firstname"
-                  name="firstname"
-                  value={formData.firstname}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder="Firstname"
-                  className="text-xl"
-                  required
-                />
-                <label htmlFor="lastname" className="sr-only">Last Name</label>
-                <Input
-                  id="lastname"
-                  name="lastname"
-                  value={formData.lastname}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder="Lastname"
-                  className="text-xl"
-                  required
-                />
-                <label htmlFor="email" className="sr-only">Email Address</label>
-                <Input
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  type="email"
-                  placeholder="Email address"
-                  className="text-xl"
-                  required
-                />
-                <label htmlFor="phone" className="sr-only">Phone Number</label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  type="tel"
-                  placeholder="Phone number"
-                  className="text-xl"
-                />
-              </div>
-              <label htmlFor="message" className="sr-only">Message</label>
-              <Textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                className="h-[200px] text-xl"
-                placeholder="Type your message here."
-                required
-              />
-              <Button size="md" className="max-w-40" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Send message"}
-              </Button>
-              {/* Display status message */}
-              {statusMessage && <p className="text-white mt-4">{statusMessage}</p>}
-            </form>
-          </article>
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
 
-          {/* Info Section */}
-          <aside className="flex-1 flex items-center xl:justify-end order-1 xl:order-none mb-8 xl:mb-0">
-            <ul className="flex flex-col gap-6">
-              {info.map((item, index) => (
-                <li key={index} className="flex items-center gap-6">
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-[52px] h-[52px] xl:w-[62px] xl:h-[62px] bg-[#27272c] text-[#FFEA00] rounded-md flex items-center justify-center"
-                    aria-label={item.title}
-                  >
-                    <div className="text-[28px]">{item.icon}</div>
-                  </a>
-                  <div className="flex-1">
-                    <p className="text-white/60">{item.title}</p>
-                    <h3 className="text-xl">{item.description}</h3>
+      <div className="container mx-auto max-w-7xl relative z-10">
+        {/* Header Section */}
+        <div className="text-center mb-20 animate-fadeIn">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full backdrop-blur-sm mb-6 hover:bg-indigo-500/20 transition-all duration-300">
+            <MessageSquare className="w-4 h-4 text-indigo-400" />
+            <span className="text-sm text-indigo-300 font-medium">
+              Lets Connect
+            </span>
+          </div>
+
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            Lets Work
+            <span className="block mt-2 bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+              Together
+            </span>
+          </h1>
+
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-4">
+            Whatever you do, work at it with all your heart, as working for the
+            Lord, not for human masters.
+          </p>
+          <p className="text-indigo-400 font-medium">— Colossians 3:23</p>
+        </div>
+
+        {/* Main Content - Single Column Centered Layout */}
+        <div className="max-w-5xl mx-auto space-y-12">
+          {/* Contact Info Cards Row */}
+          <div
+            className="grid md:grid-cols-3 gap-6 animate-fadeIn"
+            style={{ animationDelay: "0.2s" }}
+          >
+            {contactInfo.map((item, index) => {
+              const IconComponent = item.icon;
+              return (
+                <a
+                  key={index}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-indigo-500/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/10"
+                >
+                  {/* Gradient orb */}
+                  <div
+                    className={`absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-20 blur-3xl transition-opacity duration-500`}
+                  />
+
+                  <div className="relative space-y-4">
+                    {/* Icon */}
+                    <div
+                      className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${item.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <IconComponent className="w-7 h-7 text-white" />
+                    </div>
+
+                    {/* Content */}
+                    <div>
+                      <p className="text-sm text-slate-400 mb-1">
+                        {item.title}
+                      </p>
+                      <h3 className="text-base font-medium text-white group-hover:text-indigo-400 transition-colors duration-300 break-words">
+                        {item.description}
+                      </h3>
+                      <p className="text-xs text-indigo-400 mt-2 flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {item.stat}
+                      </p>
+                    </div>
+
+                    {/* Arrow indicator */}
+                    <div className="absolute top-6 right-6 w-6 h-6 flex items-center justify-center rounded-full bg-slate-800/50 border border-slate-700 group-hover:border-indigo-500 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <svg
+                        className="w-3 h-3 text-indigo-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </aside>
+                </a>
+              );
+            })}
+          </div>
+
+          {/* Contact Form - Full Width */}
+          <div className="animate-fadeIn" style={{ animationDelay: "0.4s" }}>
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 md:p-12 shadow-2xl">
+              {/* Form Header */}
+              <div className="mb-8 text-center">
+                <h2 className="text-3xl font-bold text-white mb-3">
+                  Send a Message
+                </h2>
+                <p className="text-slate-400">
+                  Fill out the form below and I will get back to you within 24-48
+                  hours.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {/* Name Fields Row */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="firstname"
+                      className="text-sm font-medium text-slate-300 flex items-center gap-2"
+                    >
+                      First Name <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      id="firstname"
+                      name="firstname"
+                      type="text"
+                      value={formData.firstname}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                      placeholder="John"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="lastname"
+                      className="text-sm font-medium text-slate-300 flex items-center gap-2"
+                    >
+                      Last Name <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      id="lastname"
+                      name="lastname"
+                      type="text"
+                      value={formData.lastname}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                      placeholder="Doe"
+                    />
+                  </div>
+                </div>
+
+                {/* Email and Phone Row */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="email"
+                      className="text-sm font-medium text-slate-300 flex items-center gap-2"
+                    >
+                      Email Address <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                      placeholder="john.doe@example.com"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="phone"
+                      className="text-sm font-medium text-slate-300"
+                    >
+                      Phone Number
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                      placeholder="+44 7413 074274"
+                    />
+                  </div>
+                </div>
+
+                {/* Message Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="message"
+                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
+                  >
+                    Your Message <span className="text-red-400">*</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows="6"
+                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 resize-none hover:border-slate-600"
+                    placeholder="Tell me about your project, ideas, or how I can help you..."
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="group w-full relative px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-medium overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  <span className="relative flex items-center justify-center gap-3 z-10">
+                    {isSubmitting ? (
+                      <>
+                        <Loader className="w-5 h-5 animate-spin" />
+                        Sending Message...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </>
+                    )}
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
+
+                {/* Status Message */}
+                {statusMessage && (
+                  <div
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border animate-fadeIn ${
+                      statusType === "success"
+                        ? "bg-green-500/10 border-green-500/30 text-green-400"
+                        : "bg-red-500/10 border-red-500/30 text-red-400"
+                    }`}
+                  >
+                    {statusType === "success" ? (
+                      <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                    )}
+                    <span className="text-sm font-medium">{statusMessage}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info Banner */}
+          <div
+            className="grid md:grid-cols-2 gap-6 animate-fadeIn"
+            style={{ animationDelay: "0.6s" }}
+          >
+            <div className="bg-gradient-to-br from-indigo-500/10 to-violet-500/10 backdrop-blur-xl border border-indigo-500/20 rounded-2xl p-6">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-5 h-5 text-indigo-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Response Time
+                  </h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    I typically respond within 24-48 hours. For urgent matters,
+                    please call directly.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 backdrop-blur-xl border border-violet-500/20 rounded-2xl p-6">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+                  <MessageSquare className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Lets Talk
+                  </h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Whether its ministry, collaboration, or spiritual guidance
+                    - Im here to help.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </motion.section>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes gradient {
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
+
+        .bg-grid-pattern {
+          background-image: linear-gradient(
+              rgba(99, 102, 241, 0.03) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(99, 102, 241, 0.03) 1px,
+              transparent 1px
+            );
+          background-size: 50px 50px;
+        }
+      `}</style>
+    </section>
   );
 };
 

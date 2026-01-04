@@ -479,7 +479,7 @@ const Gallery = () => {
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full backdrop-blur-sm mb-6">
             <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse" />
             <span className="text-sm text-indigo-300 font-medium">
-              Ministry Gallery
+              Gallery
             </span>
           </div>
 
@@ -491,8 +491,8 @@ const Gallery = () => {
           </h1>
 
           <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-            Capturing moments of worship, fellowship, and God's grace in our
-            ministry journey.
+            Capturing moments of worship, fellowship, and Gods grace in our
+            journey.
           </p>
 
           {/* Layout Toggle */}
@@ -540,7 +540,7 @@ const Gallery = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-4 left-4 right-4 text-white">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">{image.alt}</span>
+                      {/* <span className="text-sm font-medium">{image.alt}</span> */}
                       <ZoomIn className="w-5 h-5" />
                     </div>
                   </div>
