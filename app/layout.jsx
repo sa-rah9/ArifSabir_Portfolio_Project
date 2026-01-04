@@ -1,4 +1,6 @@
 import { Dancing_Script } from "next/font/google";
+import {Mulish} from "next/font/google";
+import { Noto_Serif } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import PageTransition from "../components/PageTransition";
@@ -11,7 +13,16 @@ const dancingScript = Dancing_Script({
   weight: ["400", "700"],
   variable: '--font-dancing-script', // Custom font variable
 });
-
+const mulish = Mulish({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: '--font-mulish', // Custom font variable
+});
+const notoSerif = Noto_Serif({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: '--font-noto-serif', // Custom font variable
+});
 export const metadata = {
   title: "Arif Sabir - Worshiper", // Update title for SEO
   description: "Explore Arif Sabir's devotion, spiritual journey, and creative expressions as a worshiper.", // Updated description for SEO
@@ -68,7 +79,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={`${dancingScript.variable} antialiased`}>
+      <body className={`${notoSerif.variable} antialiased`}>
         <Header />
 
         {/* Use main and article for semantic structure */}
