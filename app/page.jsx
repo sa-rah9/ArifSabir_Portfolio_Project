@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Social from "../components/Social";
 import Image from "next/image";
+import Link from "next/link";
 
 const Home = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -216,9 +217,10 @@ const Home = () => {
                   <Image
                     width={1000}
                     height={1000}
-                    src="/assets/heroimage.png"
+                    src="/assets/heroimage3.jpeg"
                     alt="Arif Sabir - Pastor & Worshipper"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    priority
                   />
                 </div>
 
@@ -339,11 +341,12 @@ const Home = () => {
                   My CV is provided upon request. Please reach out and share the
                   purpose of your inquiry.
                 </p>
-
                 <div className="pt-6 space-y-3">
-                  <button className="w-full px-6 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-medium hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg hover:shadow-indigo-500/50">
-                    Go to Contact Page
-                  </button>
+                  <Link href="/contact">
+                    <button className="w-full px-6 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-medium hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg hover:shadow-indigo-500/50">
+                      Go to Contact Page
+                    </button>
+                  </Link>
                   <button
                     onClick={() => setIsDialogOpen(false)}
                     className="w-full px-6 py-4 border-2 border-slate-700 text-slate-300 rounded-xl font-medium hover:border-slate-600 hover:bg-slate-800/50 transition-all duration-300 active:scale-95"

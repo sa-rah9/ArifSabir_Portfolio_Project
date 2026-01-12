@@ -67,19 +67,27 @@ const Contact = () => {
     setStatusMessage("");
     setStatusType("");
 
+    // Create form data object for Formspree
+    const formPayload = new FormData();
+    formPayload.append("firstname", formData.firstname);
+    formPayload.append("lastname", formData.lastname);
+    formPayload.append("email", formData.email);
+    formPayload.append("phone", formData.phone);
+    formPayload.append("message", formData.message);
+
     try {
-      const response = await fetch("/api/email", {
+      const response = await fetch("https://formspree.io/f/xykkyebw", {
         method: "POST",
+        body: formPayload,
         headers: {
-          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-
-      if (response.status === 200) {
-        setStatusMessage("Message sent successfully!");
+      if (response.ok) {
+        setStatusMessage(
+          "Message sent successfully! I'll get back to you soon."
+        );
         setStatusType("success");
         setFormData({
           firstname: "",
@@ -89,14 +97,22 @@ const Contact = () => {
           message: "",
         });
       } else {
-        setStatusMessage(
-          result.error || "Something went wrong. Please try again."
-        );
+        const data = await response.json();
+        if (data.errors) {
+          setStatusMessage(
+            data.errors.map((error) => error.message).join(", ") ||
+              "Something went wrong. Please try again."
+          );
+        } else {
+          setStatusMessage("Failed to send message. Please try again.");
+        }
         setStatusType("error");
       }
     } catch (error) {
       console.error("Error submitting form: ", error);
-      setStatusMessage("An error occurred. Please try again.");
+      setStatusMessage(
+        "Network error. Please check your connection and try again."
+      );
       setStatusType("error");
     } finally {
       setIsSubmitting(false);
@@ -210,15 +226,18 @@ const Contact = () => {
 
           {/* Contact Form - Full Width */}
           <div className="animate-fadeIn" style={{ animationDelay: "0.4s" }}>
-            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 md:p-12 shadow-2xl">
+            <form
+              onSubmit={handleSubmit}
+              className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 md:p-12 shadow-2xl"
+            >
               {/* Form Header */}
               <div className="mb-8 text-center">
                 <h2 className="text-3xl font-bold text-white mb-3">
                   Send a Message
                 </h2>
                 <p className="text-slate-400">
-                  Fill out the form below and I will get back to you within 24-48
-                  hours.
+                  Fill out the form below and I will get back to you within
+                  24-48 hours.
                 </p>
               </div>
 
@@ -326,8 +345,7 @@ const Contact = () => {
 
                 {/* Submit Button */}
                 <button
-                  type="button"
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={isSubmitting}
                   className="group w-full relative px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-medium overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
@@ -365,7 +383,7 @@ const Contact = () => {
                   </div>
                 )}
               </div>
-            </div>
+            </form>
           </div>
 
           {/* Additional Info Banner */}
@@ -400,8 +418,8 @@ const Contact = () => {
                     Lets Talk
                   </h3>
                   <p className="text-slate-300 text-sm leading-relaxed">
-                    Whether its ministry, collaboration, or spiritual guidance
-                    - Im here to help.
+                    Whether its ministry, collaboration, or spiritual guidance -
+                    Im here to help.
                   </p>
                 </div>
               </div>

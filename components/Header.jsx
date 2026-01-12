@@ -38,11 +38,11 @@ const Header = () => {
     { name: "home", path: "/", icon: Home },
     {
       name: "New Project 2026",
-      path: "/newproject",
+      path: "/new-project-2026",
       icon: Home,
       hasBadge: true,
     },
-    { name: "Donations", path: "/donations", icon: Home },
+    { name: "Charity Work", path: "/charity-work", icon: Home },
     { name: "Gallery", path: "/gallery", icon: ImageIcon },
     { name: "contact", path: "/contact", icon: Mail },
   ];
