@@ -6,38 +6,43 @@ import Header from "../components/Header";
 import PageTransition from "../components/PageTransition";
 import StairTransition from "../components/StairTransition";
 import Footer from "../components/Footer";
+import { Toaster } from "react-hot-toast";
+import ScreenProtection from "../components/ScreenProtection";
 
 // Use correct font name
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: '--font-dancing-script', // Custom font variable
+  variable: "--font-dancing-script", // Custom font variable
 });
 const mulish = Mulish({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: '--font-mulish', // Custom font variable
+  variable: "--font-mulish", // Custom font variable
 });
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: '--font-noto-serif', // Custom font variable
+  variable: "--font-noto-serif", // Custom font variable
 });
 export const metadata = {
   title: "Arif Sabir - Worshiper", // Update title for SEO
-  description: "Explore Arif Sabir's devotion, spiritual journey, and creative expressions as a worshiper.", // Updated description for SEO
-  keywords: "Arif Sabir, worshiper, spiritual journey, devotional works, worship, spirituality, portfolio", // Add relevant keywords for SEO
+  description:
+    "Explore Arif Sabir's devotion, spiritual journey, and creative expressions as a worshiper.", // Updated description for SEO
+  keywords:
+    "Arif Sabir, worshiper, spiritual journey, devotional works, worship, spirituality, portfolio", // Add relevant keywords for SEO
   openGraph: {
-    title: 'Arif Sabir - Worshiper & Spiritual Journey',
-    description: 'Discover the devotional and spiritual works of Arif Sabir, a worshiper committed to spreading enlightenment.',
-    type: 'website',
-    url: 'https://www.worshiper-arifsabir.com/',
+    title: "Arif Sabir - Worshiper & Spiritual Journey",
+    description:
+      "Discover the devotional and spiritual works of Arif Sabir, a worshiper committed to spreading enlightenment.",
+    type: "website",
+    url: "https://www.worshiper-arifsabir.com/",
     images: [
       {
-        url: 'https://i0.wp.com/www.evertonparkchurch.com.au/wp-content/uploads/2016/01/1601-Worshipping_God_B_web.jpg?w=1153&ssl=1',
+        url: "https://i0.wp.com/www.evertonparkchurch.com.au/wp-content/uploads/2016/01/1601-Worshipping_God_B_web.jpg?w=1153&ssl=1",
         width: 800,
         height: 600,
-        alt: 'Arif Sabir Worshiper Portfolio',
+        alt: "Arif Sabir Worshiper Portfolio",
       },
     ],
   },
@@ -51,11 +56,14 @@ export default function RootLayout({ children }) {
         <meta name="description" content={metadata.description} />
         <meta name="keywords" content={metadata.keywords} />
         <meta property="og:title" content={metadata.openGraph.title} />
-        <meta property="og:description" content={metadata.openGraph.description} />
+        <meta
+          property="og:description"
+          content={metadata.openGraph.description}
+        />
         <meta property="og:image" content={metadata.openGraph.images[0].url} />
         <meta property="og:type" content={metadata.openGraph.type} />
         <meta property="og:url" content={metadata.openGraph.url} />
-        
+
         {/* Structured Data for SEO */}
         <script
           type="application/ld+json"
@@ -70,7 +78,8 @@ export default function RootLayout({ children }) {
                 "https://web.facebook.com/arif.sabir1",
               ],
               jobTitle: "Worshiper",
-              description: "A worshiper dedicated to spiritual growth and devotion.",
+              description:
+                "A worshiper dedicated to spiritual growth and devotion.",
               worksFor: {
                 "@type": "Organization",
                 name: "Self",
@@ -84,8 +93,11 @@ export default function RootLayout({ children }) {
 
         {/* Use main and article for semantic structure */}
         <main>
-          <StairTransition>{children}</StairTransition>
-          <PageTransition>{children}</PageTransition>
+          <ScreenProtection watermarkText="user@email.com • MyWebsite">
+            <StairTransition>{children}</StairTransition>
+            <PageTransition>{children}</PageTransition>
+            <Toaster position="top-center" />
+          </ScreenProtection>
         </main>
 
         <Footer />

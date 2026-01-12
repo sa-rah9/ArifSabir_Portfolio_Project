@@ -289,11 +289,11 @@ const CharityWork = () => {
             />
 
             {/* Image Info */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 rounded-b-lg">
+            {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 rounded-b-lg">
               <p className="text-white text-lg font-medium">
                 {selectedImage.alt}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
